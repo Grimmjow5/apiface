@@ -1,0 +1,92 @@
+{% from "_formhelpers.html" import render_field %}
+
+{% extends "layout.html" %}
+{% block content %}
+<style>
+  input{
+    margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+line-height: inherit;
+  }
+input[type=number] {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+  input[type=text] {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+  input[type=file] {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  }
+
+
+</style>
+
+<div class="content w-50 mx-auto">
+{% if error %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+{% endif %}
+
+{% if success %}
+  <div class="alert alert-success" role="alert">
+    {{ success }}
+  </div>
+{% endif %}
+
+<form method=post    enctype="multipart/form-data">
+  {{ render_field(form.nickname) }}
+  {{ render_field(form.nombre) }}
+  {{ render_field(form.correo) }}
+  {{ render_field(form.nEmpleado) }}
+  {{ render_field(form.telefono) }}
+  {{ render_field(form.video) }}
+  <input type="submit" class="btn btn-primary" value=Register>
+</form>
+</div>
+{% endblock %}

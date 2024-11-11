@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="container w-50 mx-auto">
+{% if error %}
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
+  </div>
+{% endif %}
+
+{% if success %}
+  <div class="alert alert-success" role="alert">
+    {{ success }}
+  </div>
+{% endif %}
+  <h1>Verificando</h1>
+  <form method=post    enctype="multipart/form-data">
+    {{form.nickname.label}}
+    {{form.nickname(class_="form-control")}}
+    {{form.foto.label}}
+    {{form.foto(class_="form-control")}}
+    <input type=submit class="btn btn-primary" value="Enviar">
+  </form>
+  <img src="" id="registro" class="rounded mx-auto d-block w-25">
+</div>
+
+
+<script>
+  const ss = document.getElementById("foto");
+  ss.addEventListener("change", function(){
+    const file = this.files[0];
+    const reg = document.getElementById("registro");
+    reg.src = URL.createObjectURL(file);
+  });
+
+</script>
+{% endblock%}

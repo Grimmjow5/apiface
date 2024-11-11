@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="content w-50 mx-auto">
+<form id="loginForm" method="post" action="/reg/addEmpleado"  enctype="multipart/form-data">
+
+  <div class="mb-3">
+    <label class="form-label">Username</label>
+    <input type="text" class="form-control" name="nickname">
+  </div>
+
+  <div class="mb-3">
+    <label  class="form-label">Nombre de Usuario:</label>
+    <input type="text" class="form-control" name="nombre">
+  </div>
+
+  <div class="mb-3">
+    <label  class="form-label">Correo Electrónico:</label>
+    <input type="email" class="form-control" name="correo">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Número de Empleado:</label>
+    <input type="number" class="form-control" name="nEmpleado">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Número de Telefono:</label>
+    <input type="number" class="form-control" name="telefono">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Video:</label>
+    <input type="file" class="form-control" name="video" accept="video/*">
+  </div>
+
+  <input type="submit" class="btn btn-primary" value="Guardar">
+</form>
+</div>
+{% endblock %}

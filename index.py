@@ -4,7 +4,7 @@ from app.routes import simple_page
 from flask_cors import CORS
 from app.routesImage import verificate
 app = Flask(__name__)
-CORS(app)
+cors = CORS(app,supports_credentials=True)
 #app.config['SECRET_KEY'] = 'tu_clave_secreta'
 app.config['UPLOAD_FOLDER'] = "videos"
 app.register_blueprint(simple_page)
@@ -24,5 +24,5 @@ def index():
 '''
 if __name__ == '__main__':
    from waitress import serve
-   serve(app, host='127.0.0.1', port=80)
+   serve(app, host='0.0.0.0', port=8000)
 '''

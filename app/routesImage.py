@@ -2,19 +2,16 @@ from flask import render_template, request, redirect, Blueprint, flash
 import os
 from .models import EmpleadoDto, Verificando
 from database.repoEmpleado import setEmpleado
-import imutils
-
-from matplotlib import pyplot
-from mtcnn import MTCNN
+from faces.ControllerImg import ControllerImg
 import cv2
 
 #Tal vez un error por el mismo prefix
 verificate = Blueprint('verificate', __name__, template_folder='../templates',url_prefix='/reg')
 
+
 @verificate.route('/registrar', methods=['GET', 'POST'])
 async def registrar():
-
-  form : EmpleadoDto = EmpleadoDto(request.form)
+  form = EmpleadoDto(request.form)
   if request.method == 'POST' and form.validate():
     if 'video' not in request.files:
       print("No hay video, en este caso imagen")
@@ -23,41 +20,43 @@ async def registrar():
 
     if file.filename == '':
       print("No hay archivo")
-      return redirect(request.url)
-
-    SaveFile(file, form.nickname.data)
-    format(form.nickname.data)
+      return "No hay archivos",400
+    print(form.nickname.data)
+    control = ControllerImg(form.nickname.data)
+    pathM =control.SaveFile(file)
+    control.FormatImg(pathM,"M")
     await setEmpleado(form)
     return render_template('register.html',form=form,success="El empleado ha sido registrado",error="")
-
   else:
-    form = EmpleadoDto()
     return render_template('register.html',form=form,success="",error="")
 
 
-@verificate.route("/verificandoapi", methods=['POST'])
-def verificandoApi():
-  form = Verificando(request.form)
-  if form.validate():
-    try:
-      if 'foto' not in request.files:
-        flash('No file part')
-      file = request.files['foto']
-      SaveFileTemp(file,form.nickname.data)
-      formatTemp(form.nickname.data)
-      existe = Verificacion(form.nickname.data)
-      if existe != True:
-        raise Exception("Error")
-      else:
-        return "Success", 200
-    except:
-      return "Error", 401
-  else:
-    return  "Error", 401
 
-@verificate.get("/prueba")
+
+
+@verificate.post("/verifica")
+def verificar():
+  res = request.form
+  if 'foto' not in request.files:
+    return "No hay foto", 400
+
+  file = request.files['foto']
+  SaveFileTemp(file,res.get('nickname'))
+  formatTemp(res.get('nickname'))
+  existe = Verificacion(res.get('nickname'))
+  if existe != True:
+    return "No hay coincidencias", 401
+  else:
+    return "Coincidencias", 200
+
+
+
+
+
+
+@verificate.post("/prueba")
 def prueba():
-  return "Prueba"
+  return request.form
 
 
 @verificate.route("/verificarF", methods=['GET','POST'])

@@ -85,7 +85,7 @@ input[type=number] {
   {{ render_field(form.correo) }}
   {{ render_field(form.nEmpleado) }}
   {{ render_field(form.telefono) }}
-  {{ render_field(form.video) }}
+  {{ form.video(multiple=True) }}
   <input type="submit" class="btn btn-primary" value=Register>
 </form>
 </div>

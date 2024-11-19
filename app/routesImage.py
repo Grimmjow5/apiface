@@ -54,9 +54,9 @@ def verificar():
 
 
 
-@verificate.post("/prueba")
+@verificate.route("/prueba", methods=['GET','POST'])
 def prueba():
-  return request.form
+  return "pruebas"
 
 
 @verificate.route("/verificarF", methods=['GET','POST'])

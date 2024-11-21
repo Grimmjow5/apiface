@@ -2,6 +2,7 @@ from .modeld import Empleado
 from app.models import EmpleadoDto
 from tortoise import Tortoise
 
+
 async def setEmpleado(empleado:EmpleadoDto ):
   try:
     emplead = Empleado(
@@ -22,9 +23,8 @@ async def getEmpleado(name):
   try:
     print("GteWtf"+name)
     emplead = await Empleado.get(nickname=name)
-    print(emplead.nombre)
     await Tortoise.close_connections()
-    #return emplead
+    return emplead.nombre
   except Exception as es:
     await Tortoise.close_connections()
     raise Exception(es)

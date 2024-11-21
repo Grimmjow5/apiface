@@ -78,15 +78,22 @@ input[type=number] {
     {{ success }}
   </div>
 {% endif %}
-
-<form method=post    enctype="multipart/form-data">
+<form method=post  action="/reg/registrar"  enctype="multipart/form-data">
+  {{ form.id }}
   {{ render_field(form.nickname) }}
   {{ render_field(form.nombre) }}
   {{ render_field(form.correo) }}
   {{ render_field(form.nEmpleado) }}
   {{ render_field(form.telefono) }}
+  {{ render_field(form.activo) }}
   {{ form.video(multiple=True) }}
   <input type="submit" class="btn btn-primary" value=Register>
 </form>
+
+
+{% for field in empleado %}
+<h3>{{ field.nickname }}</h3>
+{% endfor %}
 </div>
+
 {% endblock %}

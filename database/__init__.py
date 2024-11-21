@@ -1,13 +1,18 @@
 
 
+import asyncio
 
-
-from tortoise import Tortoise, run_async
+from tortoise import Tortoise
 async def init():
   await Tortoise.init(
-    db_url='mysql://root:@127.0.0.1:3306/nuevas',
+    db_url='mysql://root:@localhost:3306/nuevas',
     modules={'models': ['database.modeld']}
   )
-  await Tortoise.generate_schemas()
 
-run_async(init())
+  await Tortoise.generate_schemas()
+  Tortoise.init_models(["database.modeld"],"models")
+  await Tortoise.close_connections()
+
+
+asyncio.run(init())
+#run_async(init())

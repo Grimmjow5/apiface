@@ -5,7 +5,6 @@ from database.repoEmpleado import setEmpleado
 from faces.Fotos import CapturaFotos
 from faces.Entrenamiento import EntrenamientoModel
 from faces.Reconocer import ReconocerFaces
-import cv2
 
 simple_page = Blueprint('simple_page', __name__,template_folder='../templates',url_prefix='/reg')
 ALLOWED_EXTENSIONS = {'txt', 'mp4'}

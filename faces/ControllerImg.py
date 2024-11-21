@@ -73,7 +73,7 @@ class ControllerImg:
       else:
         print(self.pathMuestra + f"/{self.name}.jpg", resizeImg)
         cv2.imwrite(self.pathMuestra + f"/{self.name}.jpg", resizeImg)
-
+    print("Formato Exitoso")
 
 
 

@@ -1,9 +1,11 @@
 from flask import render_template, request, redirect, Blueprint, flash
 import os
 from .models import EmpleadoDto, Verificando
-from database.repoEmpleado import setEmpleado
+from database.repoEmpleado import setEmpleado,getEmpleado
 from faces.ControllerImg import ControllerImg
+from database.modeld import Empleado
 import cv2
+from tortoise import Tortoise
 
 #Tal vez un error por el mismo prefix
 verificate = Blueprint('verificate', __name__, template_folder='../templates',url_prefix='/reg')
@@ -28,7 +30,9 @@ async def registrar():
     await setEmpleado(form)
     return render_template('register.html',form=form,success="El empleado ha sido registrado",error="")
   else:
-    return render_template('register.html',form=form,success="",error="")
+    emplados = await Empleado.all().values()
+    await Tortoise.close_connections()
+    return render_template('register.html',form=form,success="",error="",empleado=emplados)
 
 
 
@@ -54,9 +58,10 @@ def verificar():
 
 
 
-@verificate.route("/prueba", methods=['GET','POST'])
-def prueba():
-  return "pruebas"
+@verificate.route("/prueba", methods=['GET'])
+async def prueba():
+  empleados = await Empleado.all().values()
+  return empleados
 
 
 @verificate.route("/verificarF", methods=['GET','POST'])

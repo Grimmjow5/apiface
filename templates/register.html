@@ -78,8 +78,8 @@ input[type=number] {
     {{ success }}
   </div>
 {% endif %}
-<form method=post  action="/reg/registrar"  enctype="multipart/form-data">
-  {{ form.id }}
+<form method=post  action="/apiface/reg/registrar"  enctype="multipart/form-data">
+  {{ render_field(form.id) }}
   {{ render_field(form.nickname) }}
   {{ render_field(form.nombre) }}
   {{ render_field(form.correo) }}

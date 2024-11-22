@@ -2,7 +2,7 @@
 
 import asyncio
 
-from tortoise import Tortoise
+from tortoise import Tortoise, run_async
 async def init():
   await Tortoise.init(
     db_url='mysql://root:@localhost:3306/nuevas',

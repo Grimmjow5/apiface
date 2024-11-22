@@ -10,7 +10,9 @@ async def setEmpleado(empleado:EmpleadoDto ):
       correo=empleado.correo.data,
       nombre=empleado.nombre.data,
       nempleado=empleado.nEmpleado.data,
-      telefono=empleado.telefono.data
+      telefono=empleado.telefono.data,
+      activo=empleado.activo.data
+
     )
     await emplead.save()
     await Tortoise.close_connections()

@@ -3,8 +3,8 @@ from flask_wtf.csrf import generate_csrf
 from app.routes import simple_page
 from flask_cors import CORS, cross_origin
 from app.routesImage import verificate
-apps = Flask(__name__)
-cors = CORS(apps,supports_credentials=True)
+apps = Flask(__name__,static_folder='./muestras')
+#cors = CORS(apps,supports_credentials=True)
 
 #apps.config['SECRET_KEY'] = 'tu_clave_secreta'
 apps.config['UPLOAD_FOLDER'] = "videos"

@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, Blueprint, flash
 import os
 from .models import EmpleadoDto, Verificando
-from database.repoEmpleado import setEmpleado,getEmpleado
+from database.repoEmpleado import RepoEmpleados
 from faces.ControllerImg import ControllerImg
 from database.modeld import Empleado
 import cv2
@@ -14,28 +14,47 @@ verificate = Blueprint('verificate', __name__, template_folder='../templates',ur
 @verificate.route('/registrar', methods=['GET', 'POST'])
 async def registrar():
   form = EmpleadoDto(request.form)
-  if request.method == 'POST' and form.validate():
-    if 'video' not in request.files:
-      print("No hay video, en este caso imagen")
-      return redirect(request.url)
-    file = request.files['video']
+  try:
+    if request.method == 'POST' and form.validate():
+      if 'video' not in request.files:
+        print("No hay video, en este caso imagen")
+        return redirect(request.url)
+      file = request.files['video']
 
-    if file.filename == '':
-      print("No hay archivo")
-      return "No hay archivos",400
-    print(form.nickname.data)
-    control = ControllerImg(form.nickname.data)
-    pathM =control.SaveFile(file)
-    control.FormatImg(pathM,"M")
-    await setEmpleado(form)
-    return render_template('register.html',form=form,success="El empleado ha sido registrado",error="")
-  else:
-    emplados = await Empleado.all().values()
+      if file.filename == '':
+        print("No hay archivo")
+        return render_template('register.html',form=form,success="",error="No hay archivos que registrar")
+      print(form.nickname.data)
+      control = ControllerImg(form.nickname.data)
+      pathM =control.SaveFile(file)
+      control.FormatImg(pathM,"M")
+      await RepoEmpleados.setEmpleado(form)
+      form = EmpleadoDto()
+      emplados = await RepoEmpleados.getAll()
+      return render_template('register.html',form=form,success="El empleado ha sido registrado",error="",empleado=emplados)
+    else:
+      emplados = await RepoEmpleados.getAll()
+      return render_template('register.html',form=form,success="",error="",empleado=emplados)
+  except Exception as e:
     await Tortoise.close_connections()
-    return render_template('register.html',form=form,success="",error="",empleado=emplados)
+    emplados = await RepoEmpleados.getAll()
+    return render_template('register.html',form=form,success="",error=e,empleado=emplados)
 
-
-
+@verificate.route("/update", methods=['GET','POST'])
+async def update():
+  try:
+    if request.method == 'GET':
+      form = await RepoEmpleados.getId(id=request.args.get('id'))
+      empleados = await RepoEmpleados.getAll()
+      return render_template('register.html',form=form,success="",error="",empleado=empleados)
+    else:
+      form = EmpleadoDto(request.form)
+      if form.validate():
+        await RepoEmpleados.updateEmpleado(form)
+        return "Actualizado Satisfactoriamente"
+  except Exception as e:
+    empleados = await RepoEmpleados.getAll()
+    return render_template('register.html',form=form,success="",error=e,empleado=empleados)
 
 
 @verificate.post("/verifica")

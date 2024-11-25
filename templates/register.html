@@ -1,70 +1,7 @@
 {% from "_formhelpers.html" import render_field %}
-
+{% from "_errores.html" import render_errors %}
 {% extends "layout.html" %}
 {% block content %}
-<style>
-  input{
-    margin: 0;
-  font-family: inherit;
-  font-size: inherit;
-line-height: inherit;
-  }
-input[type=number] {
-    display: block;
-    width: 100%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--bs-body-color);
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: var(--bs-body-bg);
-    background-clip: padding-box;
-    border: var(--bs-border-width) solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-  }
-
-  input[type=text] {
-    display: block;
-    width: 100%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--bs-body-color);
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: var(--bs-body-bg);
-    background-clip: padding-box;
-    border: var(--bs-border-width) solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-  }
-
-  input[type=file] {
-    display: block;
-    width: 100%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--bs-body-color);
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: var(--bs-body-bg);
-    background-clip: padding-box;
-    border: var(--bs-border-width) solid var(--bs-border-color);
-    border-radius: var(--bs-border-radius);
-    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-  }
-
-
-</style>
 
 <div class="content w-50 mx-auto">
 {% if error %}
@@ -78,22 +15,82 @@ input[type=number] {
     {{ success }}
   </div>
 {% endif %}
-<form method=post  action="/apiface/reg/registrar"  enctype="multipart/form-data">
-  {{ render_field(form.id) }}
+
+<form method=post   enctype="multipart/form-data">
+  {{ form.id(class_="d-none")}}
   {{ render_field(form.nickname) }}
+  {{ render_errors(form.nickname) }}
+
   {{ render_field(form.nombre) }}
+  {{ render_errors(form.nombre) }}
+
+
   {{ render_field(form.correo) }}
+  {{ render_errors(form.correo) }}
+
   {{ render_field(form.nEmpleado) }}
+  {{ render_errors(form.nEmpleado) }}
+
   {{ render_field(form.telefono) }}
-  {{ render_field(form.activo) }}
-  {{ form.video(multiple=True) }}
+  {{ render_errors(form.telefono) }}
+
+  {{ form.activo }}
+  {{ form.activo.label }}
+  <br>
+
+  {{ render_field(form.video) }}
+  {{ render_errors(form.video) }}
+
   <input type="submit" class="btn btn-primary" value=Register>
 </form>
+<a class="position-absolute bottom-0 end-0 btn btn-danger"> Limpiar</a>
+</div>
+
+<div class="content w-75 mx-auto">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Usuario</th>
+        <th scope="col">Nombre Completo</th>
+        <th scope="col">Correo</th>
+        <th scope="col">Número de Empleado</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Activo</th>
+        <th scope="col">Imagen De Muestra</th>
+        <th scope="col">Imagen Escala de Grises</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for field in empleado %}
+
+      <th>{{field.id}}
+        <a href="/reg/update?id={{field.id}}">Editar</a>
+      </th>
+      <td>{{field.nickname}}</td>
+      <td>{{field.nombre}}</td>
+      <td>{{field.correo}}</td>
+      <td>{{field.nempleado}}</td>
+      <td>{{field.telefono}}</td>
+      <td>{{field.activo}}</td>
+      <td>
+        <img src="{{url_for('static', filename='/'+field.nickname+'/muestra_'+field.nickname+'.jpg')}}"
+        style="max-height: 140px;"
+        class="img-thumbnail"
+        />
+      </td>
+
+      <td>
+        <img src="{{url_for('static', filename='/'+field.nickname+'/'+field.nickname+'.jpg')}}"
+        style="max-height: 100px;"
+        class="img-thumbnail"
+        /></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 
 
-{% for field in empleado %}
-<h3>{{ field.nickname }}</h3>
-{% endfor %}
 </div>
 
 {% endblock %}

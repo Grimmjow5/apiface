@@ -1,3 +1,4 @@
 centro-camara
 env/
 __pycache__/
+muestras/**

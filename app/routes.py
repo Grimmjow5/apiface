@@ -1,7 +1,7 @@
 from flask import Blueprint, flash, redirect,request, render_template
 import os
 from .models import EmpleadoDto, Verificando
-from database.repoEmpleado import setEmpleado
+from database.repoEmpleado import RepoEmpleados
 from faces.Fotos import CapturaFotos
 from faces.Entrenamiento import EntrenamientoModel
 from faces.Reconocer import ReconocerFaces
@@ -18,7 +18,7 @@ async def register():
   entrenamiendo = EntrenamientoModel(form.nickname.data)
   try:
     if request.method == 'POST' and form.validate():
-      await setEmpleado(form)
+      await RepoEmpleados.setEmpleado(form)
       if 'video' not in request.files:
         flash('No file part')
         return redirect(request.url)
